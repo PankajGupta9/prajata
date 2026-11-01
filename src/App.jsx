@@ -1,7 +1,8 @@
-import { useState } from 'react'
-import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, ChevronRight, Clock3, HeartPulse, Leaf, Mail, MapPin, Menu, MessageCircle, Phone, ShieldCheck, Sparkles, Stethoscope, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, ChevronRight, Clock3, HeartPulse, Leaf, Mail, MapPin, Menu, MessageCircle, Phone, ShieldCheck, Sparkles, X } from 'lucide-react'
 
 const navLinks = ['About Dr.', 'Programs', 'Care areas', 'FAQ']
+const appointmentUrl = 'https://calendar.app.google/Z8Zk8mhcgnEkVxFw6'
 
 const programs = [
   {
@@ -42,30 +43,44 @@ const careAreas = [
   {
     title: 'Fertility & preconception',
     description: 'Couple-based assessment, cycle tracking, ovulation support, endometrial protocols, and IUI/IVF support.',
+    focus: 'A complete fertility review that looks beyond hormones at digestion, sleep, stress, ovulation, reproductive tissues, and the partner’s health.',
+    support: ['Natural conception planning', 'Cycle and ovulation tracking', 'Preconception diet and lifestyle', 'IUI/IVF preparation and support'],
   },
   {
     title: "Women’s hormonal care",
     description: 'Personalized support for PCOS, irregular cycles, PMS, painful periods, thyroid imbalance, and hormonal acne.',
+    focus: 'Care is individualized around the pattern behind irregular or painful cycles, helping restore metabolic, digestive, and reproductive balance over time.',
+    support: ['PCOS and cycle regulation', 'PMS and painful periods', 'Thyroid and hormonal balance', 'Acne, weight, and stress support'],
   },
   {
     title: 'Pregnancy care',
     description: 'Trimester-wise guidance for nutrition, digestion, energy, sleep, emotional wellbeing, and a healthy pregnancy.',
+    focus: 'Gentle, safe Ayurvedic guidance adapted to each trimester, with attention to maternal comfort, fetal nourishment, and everyday wellbeing.',
+    support: ['Trimester-wise nutrition', 'Morning sickness and digestion', 'Sleep and anxiety support', 'Birth and postpartum preparation'],
   },
   {
     title: 'Postnatal & lactation',
     description: 'Gentle postpartum recovery support for nourishment, strength, lactation, digestion, and hormonal restoration.',
+    focus: 'A supportive recovery plan that respects the physical and emotional changes after birth while rebuilding strength and restoring routine.',
+    support: ['Postnatal nourishment', 'Lactation support', 'Hormone and sleep recovery', 'Gut strength and fatigue care'],
   },
   {
     title: 'Digestive & metabolic health',
     description: 'Root-cause care for bloating, IBS, constipation, metabolic imbalance, inflammation, and healthy weight.',
+    focus: 'Digestive correction is addressed as the foundation of hormone health, immunity, energy, metabolism, and sustainable fertility care.',
+    support: ['IBS and bloating care', 'Constipation management', 'Metabolic and inflammation support', 'Sustainable food and lifestyle planning'],
   },
   {
     title: 'Male reproductive health',
     description: 'Support for sperm quality, motility, count, stress, metabolic health, and reproductive strength.',
+    focus: 'Partner-focused treatment considers semen reports, digestion, sleep, stress, medications, heat exposure, and metabolic health.',
+    support: ['Semen quality and motility support', 'Strength and reproductive tissue care', 'Stress and sleep correction', 'Nutrition and supplement guidance'],
   },
   {
     title: 'Panchakarma & Shaniika Chikitsa',
     description: 'Classical cleansing and restorative therapies selected according to your constitution and current health needs.',
+    focus: 'Therapy selection begins only after suitability, strength, health reports, and your current phase are carefully assessed.',
+    support: ['Constitution-based therapy planning', 'External Ayurvedic therapies', 'Pre- and post-therapy care', 'Restoration and long-term maintenance'],
   },
 ]
 
@@ -145,6 +160,46 @@ function App() {
     return submitted
   })
 
+  useEffect(() => {
+    const elements = document.querySelectorAll('[data-reveal]')
+    if (!('IntersectionObserver' in window)) {
+      elements.forEach((element) => element.classList.add('is-visible'))
+      return undefined
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.12 })
+
+    elements.forEach((element) => observer.observe(element))
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!selectedProgram && !bookingSuccess) return undefined
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') {
+        setSelectedProgram(null)
+        setBookingSuccess(false)
+      }
+    }
+    window.addEventListener('keydown', closeOnEscape)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [selectedProgram, bookingSuccess])
+
   return (
     <div className="min-h-screen bg-[#f5f3ed] text-[#18211c]">
       <header className="sticky top-0 z-50 border-b border-[#38204f]/10 bg-white shadow-[0_1px_0_rgba(62,31,82,0.02)]">
@@ -171,7 +226,7 @@ function App() {
                 {link}
               </a>
             ))}
-            <a href="#consultation" className="ml-[4px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-[26px] py-[15px] text-[16px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
+            <a href={appointmentUrl} target="_blank" rel="noreferrer" className="ml-[4px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-[26px] py-[15px] text-[16px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
               Book consultation
             </a>
           </div>
@@ -195,7 +250,7 @@ function App() {
                   {link}
                 </a>
               ))}
-              <a href="#consultation" onClick={() => setMenuOpen(false)} className="mt-3 rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-5 py-3 text-center text-sm font-extrabold text-white">
+              <a href={appointmentUrl} target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)} className="mt-3 rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-5 py-3 text-center text-sm font-extrabold text-white">
                 Book consultation
               </a>
             </div>
@@ -204,7 +259,7 @@ function App() {
       </header>
 
       <main>
-        <section className="mx-auto grid max-w-[1126px] items-center gap-12 px-5 py-[74px] md:grid-cols-[1.08fr_0.92fr] md:px-8 md:py-[78px] xl:px-0">
+        <section data-reveal className="site-reveal mx-auto grid max-w-[1126px] items-center gap-12 px-5 py-[74px] md:grid-cols-[1.08fr_0.92fr] md:px-8 md:py-[78px] xl:px-0">
           <div className="max-w-[520px] text-left">
             <p className="mb-[25px] flex items-center gap-[12px] text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#9349EF]">
               <Leaf size={15} strokeWidth={1.8} />
@@ -221,7 +276,7 @@ function App() {
               Supporting natural conception, hormonal balance, and healthy pregnancy through classical Ayurveda with a modern clinical approach.
             </p>
             <div className="mt-[34px] flex flex-wrap gap-[12px]">
-              <a href="#consultation" className="flex items-center gap-[9px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[24px] py-[15px] text-[14px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
+              <a href={appointmentUrl} target="_blank" rel="noreferrer" className="flex items-center gap-[9px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[24px] py-[15px] text-[14px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
                 Book consultation <ArrowRight size={16} />
               </a>
               <a href="#programs" className="rounded-full border border-[#DDD5EC] bg-white px-[24px] py-[15px] text-[14px] font-extrabold text-[#7A3BE8] transition-colors hover:border-[#9D73EC]">
@@ -241,11 +296,11 @@ function App() {
           </div>
 
           <div className="relative mx-auto w-full max-w-[430px] md:mx-0 md:ml-auto">
-            <div className="h-[480px] overflow-hidden rounded-[23px] bg-[#D9D4E7] sm:h-[580px]">
+            <div className="group h-[480px] overflow-hidden rounded-[23px] bg-[#D9D4E7] sm:h-[580px]">
               <img
                 src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=88"
                 alt="Dr. Swathi Chandrasekar"
-                className="h-full w-full object-cover object-center"
+                className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.06]"
               />
             </div>
             <div className="absolute bottom-[24px] left-[12px] w-[205px] rounded-[14px] border border-white/70 bg-white p-[18px] text-left shadow-[0_12px_30px_rgba(48,33,73,0.13)] sm:left-[-18px]">
@@ -257,7 +312,7 @@ function App() {
           </div>
         </section>
 
-        <section id="care-areas" className="bg-[#FCFBF8] px-5 py-[70px] md:py-[88px]">
+        <section id="care-areas" data-reveal className="site-reveal bg-[#FCFBF8] px-5 py-[70px] md:py-[88px]">
           <div className="mx-auto grid max-w-[1126px] items-start gap-12 md:grid-cols-[0.88fr_1.12fr]">
             <div className="text-left">
               <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
@@ -319,7 +374,7 @@ function App() {
           </div>
         </section>
 
-        <section id="programs" className="bg-white px-5 py-[72px] md:py-[82px]">
+        <section id="programs" data-reveal className="site-reveal bg-white px-5 py-[72px] md:py-[82px]">
           <div className="mx-auto max-w-[1126px] text-left">
             <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
               <Sparkles size={13} />
@@ -338,7 +393,7 @@ function App() {
                 return (
                   <article
                     key={program.title}
-                    className={`flex min-h-[292px] flex-col rounded-[18px] border bg-white p-[22px] text-left transition-all ${
+                    className={`interactive-card flex min-h-[292px] flex-col rounded-[18px] border bg-white p-[22px] text-left transition-all duration-300 ${
                       isSelected ? 'border-[#A873EF] shadow-[0_12px_28px_rgba(83,52,121,0.12)]' : 'border-[#E3DDE9] shadow-[0_7px_18px_rgba(54,34,81,0.07)]'
                     }`}
                   >
@@ -362,7 +417,7 @@ function App() {
           </div>
         </section>
 
-        <section id="care-areas-detail" className="bg-[#FCFBF8] px-5 py-[72px] md:py-[82px]">
+        <section id="care-areas-detail" data-reveal className="site-reveal bg-[#FCFBF8] px-5 py-[72px] md:py-[82px]">
           <div className="mx-auto max-w-[1126px] text-left">
             <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
               <Sparkles size={13} />
@@ -393,8 +448,8 @@ function App() {
                 ))}
               </div>
 
-              <div className="relative min-h-[430px] overflow-hidden rounded-[24px] border border-[#E3DDE8] bg-white shadow-[0_8px_22px_rgba(54,34,81,0.06)]">
-                <div className="px-[34px] pt-[48px] pr-[40px] sm:px-[48px] sm:pt-[52px]">
+              <div key={careAreas[activeCare].title} className="care-detail-enter relative min-h-[430px] overflow-hidden rounded-[24px] border border-[#E3DDE8] bg-white shadow-[0_8px_22px_rgba(54,34,81,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#C8B2EB] hover:shadow-[0_18px_38px_rgba(54,34,81,0.12)]">
+                <div className="px-7 pt-9 pb-[88px] sm:px-12 sm:pt-12 sm:pb-[100px]">
                   <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#9349EF]">Specialized service</p>
                   <h3 className="mt-[22px] font-serif text-[30px] leading-[1.12] font-bold text-[#24175A] sm:text-[34px]">
                     {careAreas[activeCare].title}
@@ -402,17 +457,30 @@ function App() {
                   <p className="mt-[20px] max-w-[540px] text-[16px] leading-[26px] text-[#665A7B]">
                     {careAreas[activeCare].description}
                   </p>
+                  <p className="mt-5 max-w-[540px] text-[14px] leading-[24px] text-[#665A7B]">
+                    {careAreas[activeCare].focus}
+                  </p>
+                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                    {careAreas[activeCare].support.map((item) => (
+                      <div key={item} className="flex items-start gap-[8px] rounded-[10px] bg-[#FBF9FF] px-3 py-[10px] text-[13px] font-bold leading-[20px] text-[#4E3D70]">
+                        <Check size={15} className="mt-[2px] shrink-0 text-[#9951F4]" strokeWidth={2.5} />
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="absolute bottom-[34px] left-[34px] flex items-center gap-[10px] text-[13px] text-[#665A7B] sm:left-[48px]">
-                  <Stethoscope size={20} className="text-[#9951F4]" />
-                  <span>Ayurveda + modern diagnostic understanding</span>
-                </div>
+                <a
+                  href="#consultation"
+                  className="absolute bottom-5 left-7 flex items-center gap-[8px] text-[13px] font-extrabold text-[#9540EF] sm:bottom-[28px] sm:left-12"
+                >
+                  Discuss this care area <ArrowRight size={15} />
+                </a>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="about-dr" className="bg-white px-5 py-[72px] md:py-[82px]">
+        <section id="about-dr" data-reveal className="site-reveal bg-white px-5 py-[72px] md:py-[82px]">
           <div className="mx-auto grid max-w-[1126px] gap-[48px] md:grid-cols-[1.08fr_0.92fr] md:items-start">
             <div className="text-left">
               <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
@@ -474,7 +542,7 @@ function App() {
           </div>
         </section>
 
-        <section id="follow-up-care" className="bg-[#FCFBF8] px-5 py-[72px] md:py-[82px]">
+        <section id="follow-up-care" data-reveal className="site-reveal bg-[#FCFBF8] px-5 py-[72px] md:py-[82px]">
           <div className="mx-auto max-w-[1126px] text-left">
             <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
               <CalendarDays size={13} />
@@ -495,7 +563,7 @@ function App() {
                 ['DAY 15', 'Continue consistently as the body begins responding internally.'],
                 ['DAY 30', 'Progress is reviewed and a structured continuation plan is offered.'],
               ].map(([day, copy]) => (
-                <article key={day} className="min-h-[175px] rounded-[14px] border border-[#E3DEE7] bg-white px-[20px] py-[24px] shadow-[0_5px_14px_rgba(54,34,81,0.04)]">
+                <article key={day} className="interactive-card min-h-[175px] rounded-[14px] border border-[#E3DEE7] bg-white px-[20px] py-[24px] shadow-[0_5px_14px_rgba(54,34,81,0.04)] transition-all duration-300">
                   <p className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-[#8C43EE]">{day}</p>
                   <p className="mt-[18px] text-[15px] leading-[24px] text-[#665A7B]">{copy}</p>
                 </article>
@@ -504,7 +572,7 @@ function App() {
           </div>
         </section>
 
-        <section id="patient-stories" className="bg-white px-5 py-[72px] md:py-[82px]">
+        <section id="patient-stories" data-reveal className="site-reveal bg-white px-5 py-[72px] md:py-[82px]">
           <div className="mx-auto max-w-[1126px] text-left">
             <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
               <Sparkles size={13} />
@@ -523,7 +591,7 @@ function App() {
                 ['Personalized from day one', 'The plan was built around my reports and routine instead of giving me a generic checklist.'],
                 ['Consistent support', 'The follow-up messages helped me stay consistent and made it easy to ask questions between consultations.'],
               ].map(([title, copy]) => (
-                <article key={title} className="min-h-[210px] rounded-[18px] border border-[#E2DDE8] bg-white px-[28px] py-[32px] shadow-[0_7px_18px_rgba(54,34,81,0.06)]">
+                <article key={title} className="interactive-card min-h-[210px] rounded-[18px] border border-[#E2DDE8] bg-white px-[28px] py-[32px] shadow-[0_7px_18px_rgba(54,34,81,0.06)] transition-all duration-300">
                   <div className="text-[15px] tracking-[0.18em] text-[#A14CF4]" aria-label="5 out of 5 stars">
                     ★ ★ ★ ★ ★
                   </div>
@@ -535,7 +603,7 @@ function App() {
           </div>
         </section>
 
-        <section id="faq" className="bg-[#FCFBF8] px-5 py-[72px] md:py-[82px]">
+        <section id="faq" data-reveal className="site-reveal bg-[#FCFBF8] px-5 py-[72px] md:py-[82px]">
           <div className="mx-auto max-w-[1126px] text-left">
             <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
               <Sparkles size={13} />
@@ -554,7 +622,7 @@ function App() {
                 return (
                   <article
                     key={faq.question}
-                    className={`overflow-hidden rounded-[14px] border bg-white transition-colors ${
+                    className={`interactive-card overflow-hidden rounded-[14px] border bg-white transition-all duration-300 ${
                       isOpen ? 'border-[#CDB7F3]' : 'border-[#E4DFEA]'
                     }`}
                   >
@@ -582,7 +650,7 @@ function App() {
           </div>
         </section>
 
-        <section id="consultation" className="bg-white px-5 py-[72px] md:py-[82px]">
+        <section id="consultation" data-reveal className="site-reveal bg-white px-5 py-[72px] md:py-[82px]">
           <div className="mx-auto grid max-w-[1126px] items-center gap-[52px] md:grid-cols-[0.8fr_1.2fr]">
             <div className="text-left">
               <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
@@ -602,17 +670,17 @@ function App() {
                 <div className="flex items-center gap-[10px]"><ShieldCheck size={17} className="text-[#9951F4]" /> Ayurveda with modern report review</div>
               </div>
               <a
-                href="https://calendar.google.com/calendar/u/0/r/eventedit"
+                href={appointmentUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-[28px] inline-flex items-center gap-[7px] text-[14px] font-extrabold text-[#9540EF]"
+                className="mt-[28px] inline-flex items-center gap-[9px] rounded-full bg-[#9540EF] px-[24px] py-[14px] text-[14px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.16)] transition-transform hover:-translate-y-0.5"
               >
-                Choose a time on Google Calendar <ArrowRight size={15} />
+                Schedule appointment <ArrowRight size={15} />
               </a>
             </div>
 
             <form
-              className="rounded-[24px] border border-[#E2DDE8] bg-white px-[24px] py-[32px] text-left shadow-[0_10px_24px_rgba(54,34,81,0.08)] sm:px-[40px]"
+              className="rounded-[24px] border border-[#E2DDE8] bg-[#FEFDFF] px-5 py-7 text-left shadow-[0_16px_40px_rgba(54,34,81,0.10)] sm:px-10 sm:py-10"
               action="https://formsubmit.co/pankajgupta1468@gmail.com"
               method="POST"
             >
@@ -620,23 +688,27 @@ function App() {
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_next" value={`${window.location.origin}${window.location.pathname}?consultation=submitted`} />
-              <div className="grid gap-[18px] sm:grid-cols-2">
-                <label className="text-[13px] font-extrabold text-[#31216A]">
+              <div className="mb-6 border-b border-[#ECE7F1] pb-5">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#9951F4]">Consultation request</p>
+                <h3 className="mt-2 font-serif text-[26px] font-bold text-[#24175A]">Tell us about yourself</h3>
+              </div>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <label className="text-[13px] font-bold tracking-[0.01em] text-[#31216A]">
                   Your name
-                  <input required name="name" placeholder="Full name" className="mt-[8px] w-full rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors placeholder:text-[#9A93A8] focus:border-[#9951F4]" />
+                  <input required autoComplete="name" name="name" placeholder="Full name" className="mt-2.5 w-full rounded-xl border border-[#DDD6E7] bg-white px-4 py-[13px] text-[15px] font-normal text-[#31216A] outline-none transition-all placeholder:text-[#A39AAA] focus:border-[#9951F4] focus:ring-4 focus:ring-[#9951F4]/10" />
                 </label>
-                <label className="text-[13px] font-extrabold text-[#31216A]">
+                <label className="text-[13px] font-bold tracking-[0.01em] text-[#31216A]">
                   Phone number
-                  <input required name="phone" type="tel" placeholder="Your phone number" className="mt-[8px] w-full rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors placeholder:text-[#9A93A8] focus:border-[#9951F4]" />
+                  <input required autoComplete="tel" name="phone" type="tel" placeholder="+91 00000 00000" className="mt-2.5 w-full rounded-xl border border-[#DDD6E7] bg-white px-4 py-[13px] text-[15px] font-normal text-[#31216A] outline-none transition-all placeholder:text-[#A39AAA] focus:border-[#9951F4] focus:ring-4 focus:ring-[#9951F4]/10" />
                 </label>
               </div>
-              <label className="mt-[18px] block text-[13px] font-extrabold text-[#31216A]">
+              <label className="mt-5 block text-[13px] font-bold tracking-[0.01em] text-[#31216A]">
                 Email address
-                <input required name="email" type="email" placeholder="Your email address" className="mt-[8px] w-full rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors placeholder:text-[#9A93A8] focus:border-[#9951F4]" />
+                <input required autoComplete="email" name="email" type="email" placeholder="you@example.com" className="mt-2.5 w-full rounded-xl border border-[#DDD6E7] bg-white px-4 py-[13px] text-[15px] font-normal text-[#31216A] outline-none transition-all placeholder:text-[#A39AAA] focus:border-[#9951F4] focus:ring-4 focus:ring-[#9951F4]/10" />
               </label>
-              <label className="mt-[18px] block text-[13px] font-extrabold text-[#31216A]">
+              <label className="mt-5 block text-[13px] font-bold tracking-[0.01em] text-[#31216A]">
                 Consultation type
-                <select name="consultationType" className="mt-[8px] w-full rounded-[10px] border border-[#DED7E7] bg-white px-[15px] py-[12px] text-[14px] font-normal outline-none focus:border-[#9951F4]">
+                <select name="consultationType" className="mt-2.5 w-full rounded-xl border border-[#DDD6E7] bg-white px-4 py-[13px] text-[15px] font-normal text-[#31216A] outline-none transition-all focus:border-[#9951F4] focus:ring-4 focus:ring-[#9951F4]/10">
                   <option>Fertility and preconception</option>
                   <option>PCOS and hormonal health</option>
                   <option>Pregnancy care</option>
@@ -645,13 +717,13 @@ function App() {
                   <option>Male reproductive health</option>
                 </select>
               </label>
-              <label className="mt-[18px] block text-[13px] font-extrabold text-[#31216A]">
+              <label className="mt-5 block text-[13px] font-bold tracking-[0.01em] text-[#31216A]">
                 Preferred appointment date and time
-                <input name="appointment" type="datetime-local" className="mt-[8px] w-full rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors focus:border-[#9951F4]" />
+                <input name="appointment" type="datetime-local" className="mt-2.5 w-full rounded-xl border border-[#DDD6E7] bg-white px-4 py-[13px] text-[15px] font-normal text-[#31216A] outline-none transition-all focus:border-[#9951F4] focus:ring-4 focus:ring-[#9951F4]/10" />
               </label>
-              <label className="mt-[18px] block text-[13px] font-extrabold text-[#31216A]">
+              <label className="mt-5 block text-[13px] font-bold tracking-[0.01em] text-[#31216A]">
                 Message
-                <textarea name="message" rows="3" placeholder="Tell us briefly what support you are looking for" className="mt-[8px] w-full resize-y rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors placeholder:text-[#9A93A8] focus:border-[#9951F4]" />
+                <textarea name="message" rows="4" placeholder="Briefly tell us what support you are looking for" className="mt-2.5 w-full resize-y rounded-xl border border-[#DDD6E7] bg-white px-4 py-[13px] text-[15px] font-normal leading-6 text-[#31216A] outline-none transition-all placeholder:text-[#A39AAA] focus:border-[#9951F4] focus:ring-4 focus:ring-[#9951F4]/10" />
               </label>
               <button
                 type="submit"
@@ -663,7 +735,7 @@ function App() {
           </div>
         </section>
 
-        <section className="bg-white px-5 py-[38px] md:py-[44px]">
+        <section id="privacy-disclaimer" className="bg-white px-5 py-[38px] md:py-[44px] scroll-mt-[98px]">
           <div className="mx-auto grid max-w-[1126px] gap-[42px] md:grid-cols-2">
             <div className="text-left">
               <h2 className="font-serif text-[24px] font-bold text-[#24175A]">Your privacy matters</h2>
@@ -690,7 +762,7 @@ function App() {
               if (event.target === event.currentTarget) setBookingSuccess(false)
             }}
           >
-            <div className="w-full max-w-[430px] rounded-[24px] bg-white px-7 py-9 text-center shadow-[0_24px_70px_rgba(35,20,54,0.24)] sm:px-10">
+            <div className="popup-enter w-full max-w-[430px] rounded-[24px] bg-white px-7 py-9 text-center shadow-[0_24px_70px_rgba(35,20,54,0.24)] sm:px-10">
               <div className="mx-auto grid size-[58px] place-items-center rounded-full bg-[#F1EAFE] text-[#9540EF]">
                 <Check size={28} strokeWidth={2.5} />
               </div>
@@ -721,41 +793,48 @@ function App() {
               if (event.target === event.currentTarget) setSelectedProgram(null)
             }}
           >
-            <div className="relative max-h-[calc(100vh-48px)] w-full max-w-[820px] overflow-y-auto rounded-[30px] bg-white px-7 py-7 text-left shadow-[0_24px_70px_rgba(35,20,54,0.24)] sm:px-[68px] sm:py-[46px]">
+            <div className="program-modal-enter relative max-h-[calc(100vh-32px)] w-full max-w-[820px] overflow-y-auto rounded-[24px] bg-white px-6 py-6 text-left shadow-[0_24px_70px_rgba(35,20,54,0.24)] sm:rounded-[30px] sm:px-[64px] sm:py-[48px]">
               <button
                 type="button"
                 onClick={() => setSelectedProgram(null)}
-                className="absolute right-[28px] top-[28px] grid size-[38px] place-items-center rounded-full text-[#A348F0] transition-colors hover:bg-[#F4ECFF]"
+                className="absolute right-4 top-4 grid size-[42px] place-items-center rounded-full border border-[#EEE8F4] bg-white text-[#A348F0] shadow-sm transition-all hover:rotate-90 hover:bg-[#F4ECFF] sm:right-7 sm:top-7"
                 aria-label="Close program details"
               >
                 <X size={21} />
               </button>
 
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.17em] text-[#9349EF]">Program journal</p>
-              <h2 id="program-modal-title" className="mt-[18px] pr-12 font-serif text-[38px] leading-[1.05] font-bold text-[#24175A] sm:text-[42px]">
+              <p className="pr-12 text-[11px] font-bold uppercase tracking-[0.16em] text-[#9349EF]">Personalized signature program</p>
+              <h2 id="program-modal-title" className="mt-4 pr-12 font-serif text-[34px] leading-[1.08] font-bold tracking-[-0.02em] text-[#24175A] sm:text-[44px]">
                 {selectedProgram.title}
               </h2>
-              <p className="mt-[22px] max-w-[690px] text-[17px] leading-[31px] text-[#665A7B] sm:text-[18px] sm:leading-[32px]">
+              <div className="mt-5 inline-flex rounded-full bg-[#F4EEFC] px-4 py-2 text-[12px] font-bold text-[#70409D]">
+                Duration: {selectedProgram.duration}
+              </div>
+              <p className="mt-6 max-w-[690px] border-l-[3px] border-[#B98AEF] pl-5 text-[16px] leading-[28px] text-[#604F78] sm:text-[17px] sm:leading-[30px]">
                 {selectedProgram.detail}
               </p>
 
-              <h3 className="mt-[34px] font-serif text-[22px] font-bold text-[#24175A]">What this program may include</h3>
-              <div className="mt-[20px] grid gap-x-[30px] gap-y-[16px] sm:grid-cols-2">
+              <h3 className="mt-9 font-serif text-[23px] font-bold text-[#24175A]">What this program may include</h3>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-3">
                 {(selectedProgram.includes.length > 4
                   ? selectedProgram.includes
                   : [...selectedProgram.includes, 'Long-term follow-up and plan adjustments']
                 ).slice(0, 4).map((item) => (
-                  <div key={item} className="flex items-start gap-[10px] text-[14px] leading-[22px] text-[#665A7B] sm:text-[15px]">
-                    <Check size={17} className="mt-[2px] shrink-0 text-[#9951F4]" strokeWidth={2} />
+                  <div key={item} className="flex items-start gap-3 rounded-[12px] border border-[#EEE8F2] bg-[#FBFAFD] px-4 py-[14px] text-[14px] font-medium leading-[22px] text-[#625273] sm:text-[15px]">
+                    <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-[#F1E7FC] text-[#9951F4]">
+                      <Check size={13} strokeWidth={2.5} />
+                    </span>
                     <span>{item}</span>
                   </div>
                 ))}
               </div>
 
               <a
-                href="#consultation"
+                href={appointmentUrl}
+                target="_blank"
+                rel="noreferrer"
                 onClick={() => setSelectedProgram(null)}
-                className="mt-[38px] inline-flex items-center gap-[9px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[26px] py-[16px] text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.16)]"
+                className="mt-9 inline-flex w-full items-center justify-center gap-[9px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[26px] py-[16px] text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.16)] transition-transform hover:-translate-y-0.5 sm:w-auto"
               >
                 Book a consultation <ArrowRight size={16} />
               </a>
@@ -815,7 +894,7 @@ function App() {
                 <a href="#about-dr" className="text-[14px] text-white/85 hover:text-white">About</a>
                 <a href="#programs" className="text-[14px] text-white/85 hover:text-white">Signature programs</a>
                 <a href="#faq" className="text-[14px] text-white/85 hover:text-white">FAQs</a>
-                <a href="#consultation" className="text-[14px] text-white/85 hover:text-white">Privacy &amp; disclaimer</a>
+                <a href="#privacy-disclaimer" className="text-[14px] text-white/85 hover:text-white">Privacy &amp; disclaimer</a>
               </nav>
             </div>
             <div className="text-left">
@@ -823,7 +902,7 @@ function App() {
               <p className="mt-[16px] max-w-[300px] text-[14px] leading-[22px] text-white/85">
                 For fertility, hormonal, digestive, pregnancy, and postnatal care.
               </p>
-              <a href="#consultation" className="mt-[14px] inline-flex items-center gap-[7px] text-[14px] font-extrabold text-white">
+              <a href={appointmentUrl} target="_blank" rel="noreferrer" className="mt-[14px] inline-flex items-center gap-[7px] text-[14px] font-extrabold text-white">
                 Book consultation <ArrowRight size={15} />
               </a>
             </div>
