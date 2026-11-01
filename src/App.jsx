@@ -148,7 +148,7 @@ function App() {
   return (
     <div className="min-h-screen bg-[#f5f3ed] text-[#18211c]">
       <header className="sticky top-0 z-50 border-b border-[#38204f]/10 bg-white shadow-[0_1px_0_rgba(62,31,82,0.02)]">
-        <nav className="mx-auto flex h-[98px] max-w-[1126px] items-center justify-between px-5 md:px-0" aria-label="Primary navigation">
+        <nav className="mx-auto flex h-[78px] max-w-[1126px] items-center justify-between px-5 sm:h-[98px] md:px-8 xl:px-0" aria-label="Primary navigation">
           <a href="#" className="flex items-center gap-4" aria-label="Dr. Swathi Chandrasekar home">
             <span className="grid size-[44px] shrink-0 place-items-center rounded-full" aria-hidden="true">
               <svg viewBox="0 0 52 52" className="size-[44px]" fill="none">
@@ -160,8 +160,8 @@ function App() {
               </svg>
             </span>
             <span className="text-left">
-              <span className="block font-serif text-[25px] leading-none font-bold tracking-[0.01em] text-[#351B63]">Dr. Swathi C</span>
-              <span className="mt-[8px] block text-[11px] font-extrabold uppercase tracking-[0.24em] text-[#9B42D0]">Ayurvedic fertility care</span>
+              <span className="block font-serif text-[20px] leading-none font-bold tracking-[0.01em] text-[#351B63] sm:text-[25px]">Dr. Swathi C</span>
+              <span className="mt-[8px] hidden text-[11px] font-extrabold uppercase tracking-[0.24em] text-[#9B42D0] sm:block">Ayurvedic fertility care</span>
             </span>
           </a>
 
@@ -191,7 +191,7 @@ function App() {
           <div className="border-t border-[#18211c]/10 bg-[#f5f3ed] px-5 py-5 md:hidden">
             <div className="mx-auto flex max-w-7xl flex-col gap-1">
               {navLinks.map((link) => (
-                <a key={link} href={`#${link.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="border-b border-[#18211c]/10 py-3 text-lg font-semibold">
+                <a key={link} href={`#${link.toLowerCase().replaceAll(' ', '-')}`} onClick={() => setMenuOpen(false)} className="border-b border-[#18211c]/10 py-3 text-lg font-semibold">
                   {link}
                 </a>
               ))}
@@ -204,7 +204,7 @@ function App() {
       </header>
 
       <main>
-        <section className="mx-auto grid max-w-[1126px] items-center gap-12 px-5 py-[74px] md:grid-cols-[1.08fr_0.92fr] md:px-0 md:py-[78px]">
+        <section className="mx-auto grid max-w-[1126px] items-center gap-12 px-5 py-[74px] md:grid-cols-[1.08fr_0.92fr] md:px-8 md:py-[78px] xl:px-0">
           <div className="max-w-[520px] text-left">
             <p className="mb-[25px] flex items-center gap-[12px] text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#9349EF]">
               <Leaf size={15} strokeWidth={1.8} />
@@ -241,14 +241,14 @@ function App() {
           </div>
 
           <div className="relative mx-auto w-full max-w-[430px] md:mx-0 md:ml-auto">
-            <div className="h-[580px] overflow-hidden rounded-[23px] bg-[#D9D4E7]">
+            <div className="h-[480px] overflow-hidden rounded-[23px] bg-[#D9D4E7] sm:h-[580px]">
               <img
                 src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=88"
                 alt="Dr. Swathi Chandrasekar"
                 className="h-full w-full object-cover object-center"
               />
             </div>
-            <div className="absolute bottom-[24px] left-[-18px] w-[205px] rounded-[14px] border border-white/70 bg-white p-[18px] text-left shadow-[0_12px_30px_rgba(48,33,73,0.13)]">
+            <div className="absolute bottom-[24px] left-[12px] w-[205px] rounded-[14px] border border-white/70 bg-white p-[18px] text-left shadow-[0_12px_30px_rgba(48,33,73,0.13)] sm:left-[-18px]">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#9349EF]">Root cause care</p>
               <p className="mt-[10px] font-serif text-[16px] leading-[24px] font-bold text-[#321B68]">
                 Your body can heal<br />with the right support.
@@ -765,7 +765,7 @@ function App() {
       </main>
 
       <footer id="contact" className="bg-[#784CF0] text-white">
-        <div className="mx-auto grid max-w-[1126px] gap-[50px] px-5 py-[62px] text-left md:grid-cols-[1.15fr_0.85fr] md:px-0 md:py-[68px]">
+        <div className="mx-auto grid max-w-[1126px] gap-[50px] px-5 py-[62px] text-left md:grid-cols-[1.15fr_0.85fr] md:px-8 md:py-[68px] xl:px-0">
           <div>
             <MessageCircle size={38} strokeWidth={1.7} className="text-white" />
             <h2 className="mt-[22px] max-w-[620px] font-serif text-[44px] leading-[1.08] font-bold sm:text-[50px]">
@@ -799,6 +799,38 @@ function App() {
               </span>
             </a>
           </div>
+        </div>
+      </footer>
+
+      <footer className="bg-[#302A70] text-white">
+        <div className="mx-auto max-w-[1126px] px-5 py-[38px] md:px-8 xl:px-0">
+          <div className="grid gap-[34px] border-b border-white/10 pb-[34px] md:grid-cols-[1fr_0.55fr_0.75fr]">
+            <div className="text-left">
+              <h2 className="font-serif text-[24px] font-bold text-white">Dr. Swathi C</h2>
+              <p className="mt-[12px] text-[14px] text-white/75">Ayurvedic Fertility &amp; Women&apos;s Health Specialist</p>
+            </div>
+            <div className="text-left">
+              <h3 className="text-[12px] font-extrabold uppercase tracking-[0.12em] text-[#DCC8FF]">Explore</h3>
+              <nav className="mt-[16px] flex flex-col gap-[8px]" aria-label="Footer navigation">
+                <a href="#about-dr" className="text-[14px] text-white/85 hover:text-white">About</a>
+                <a href="#programs" className="text-[14px] text-white/85 hover:text-white">Signature programs</a>
+                <a href="#faq" className="text-[14px] text-white/85 hover:text-white">FAQs</a>
+                <a href="#consultation" className="text-[14px] text-white/85 hover:text-white">Privacy &amp; disclaimer</a>
+              </nav>
+            </div>
+            <div className="text-left">
+              <h3 className="text-[12px] font-extrabold uppercase tracking-[0.12em] text-[#DCC8FF]">Connect</h3>
+              <p className="mt-[16px] max-w-[300px] text-[14px] leading-[22px] text-white/85">
+                For fertility, hormonal, digestive, pregnancy, and postnatal care.
+              </p>
+              <a href="#consultation" className="mt-[14px] inline-flex items-center gap-[7px] text-[14px] font-extrabold text-white">
+                Book consultation <ArrowRight size={15} />
+              </a>
+            </div>
+          </div>
+          <p className="pt-[24px] text-left text-[13px] text-white/60">
+            © {new Date().getFullYear()} Dr. Swathi C. Integrative + personalized Ayurvedic care.
+          </p>
         </div>
       </footer>
     </div>
