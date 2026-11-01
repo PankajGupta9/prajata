@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronRight, HeartPulse, Leaf, Menu, Sparkles, Stethoscope, X } from 'lucide-react'
+import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, ChevronRight, HeartPulse, Leaf, Menu, Sparkles, Stethoscope, X } from 'lucide-react'
 
 const navLinks = ['About Dr.', 'Programs', 'Care areas', 'FAQ']
 
@@ -69,6 +69,25 @@ const careAreas = [
   },
 ]
 
+const faqs = [
+  {
+    question: 'Can Ayurveda support IVF or IUI?',
+    answer: 'Yes. Care can be coordinated alongside your fertility specialist to support digestion, cycle health, stress regulation, and recovery. Bring your current reports to the consultation.',
+  },
+  {
+    question: 'Do I need to come as a couple?',
+    answer: 'Not always. Individual consultations are available, but when fertility is being addressed together, including your partner can provide a more complete picture.',
+  },
+  {
+    question: 'How long does a fertility program take?',
+    answer: 'Program duration varies according to the condition, reports, and treatment response. Structured programs commonly range from three to six months, with regular reviews.',
+  },
+  {
+    question: 'Can I consult for PCOS, IBS, or painful periods?',
+    answer: 'Yes. The consultation may include menstrual health, digestion, hormones, lifestyle, nutrition, stress, and relevant report review to create a personalized plan.',
+  },
+]
+
 function ProgramIcon({ type }) {
   const common = { viewBox: '0 0 64 64', className: 'size-[54px]', fill: 'none', 'aria-hidden': true }
   const color = '#8A38C8'
@@ -115,6 +134,7 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [selectedProgram, setSelectedProgram] = useState(null)
   const [activeCare, setActiveCare] = useState(0)
+  const [activeFaq, setActiveFaq] = useState(0)
 
   return (
     <div className="min-h-screen bg-[#f5f3ed] text-[#18211c]">
@@ -471,6 +491,84 @@ function App() {
                   <p className="mt-[18px] text-[15px] leading-[24px] text-[#665A7B]">{copy}</p>
                 </article>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="patient-stories" className="bg-white px-5 py-[72px] md:py-[82px]">
+          <div className="mx-auto max-w-[1126px] text-left">
+            <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
+              <Sparkles size={13} />
+              Patient stories
+            </p>
+            <h2 className="mt-[24px] max-w-[720px] font-serif text-[44px] leading-[1.08] font-bold tracking-[-0.02em] text-[#24175A] sm:text-[50px]">
+              Care that makes space for your questions and your whole story.
+            </h2>
+            <p className="mt-[22px] max-w-[650px] text-[16px] leading-[26px] text-[#665A7B]">
+              Every person&apos;s path is different. The goal is thoughtful guidance, practical support, and a plan you can follow with confidence.
+            </p>
+
+            <div className="mt-[46px] grid gap-[20px] md:grid-cols-3">
+              {[
+                ['A calm, thoughtful process', 'Every step was explained with patience. I finally understood how digestion, stress, and my cycle were connected.'],
+                ['Personalized from day one', 'The plan was built around my reports and routine instead of giving me a generic checklist.'],
+                ['Consistent support', 'The follow-up messages helped me stay consistent and made it easy to ask questions between consultations.'],
+              ].map(([title, copy]) => (
+                <article key={title} className="min-h-[210px] rounded-[18px] border border-[#E2DDE8] bg-white px-[28px] py-[32px] shadow-[0_7px_18px_rgba(54,34,81,0.06)]">
+                  <div className="text-[15px] tracking-[0.18em] text-[#A14CF4]" aria-label="5 out of 5 stars">
+                    ★ ★ ★ ★ ★
+                  </div>
+                  <h3 className="mt-[20px] font-serif text-[21px] font-bold text-[#24175A]">{title}</h3>
+                  <p className="mt-[14px] text-[15px] leading-[24px] text-[#665A7B]">&ldquo;{copy}&rdquo;</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="faq" className="bg-[#FCFBF8] px-5 py-[72px] md:py-[82px]">
+          <div className="mx-auto max-w-[1126px] text-left">
+            <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
+              <Sparkles size={13} />
+              Questions answered
+            </p>
+            <h2 className="mt-[24px] max-w-[650px] font-serif text-[44px] leading-[1.08] font-bold tracking-[-0.02em] text-[#24175A] sm:text-[50px]">
+              Start with clarity.
+            </h2>
+            <p className="mt-[22px] max-w-[650px] text-[16px] leading-[26px] text-[#665A7B]">
+              Here are a few common questions about personalized Ayurvedic fertility and women&apos;s health care.
+            </p>
+
+            <div className="mt-[42px] space-y-[12px]">
+              {faqs.map((faq, index) => {
+                const isOpen = activeFaq === index
+                return (
+                  <article
+                    key={faq.question}
+                    className={`overflow-hidden rounded-[14px] border bg-white transition-colors ${
+                      isOpen ? 'border-[#CDB7F3]' : 'border-[#E4DFEA]'
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setActiveFaq(isOpen ? null : index)}
+                      className="flex w-full items-center justify-between gap-6 px-[20px] py-[20px] text-left text-[15px] font-extrabold text-[#31216A]"
+                      aria-expanded={isOpen}
+                    >
+                      <span>{faq.question}</span>
+                      <ChevronDown
+                        size={18}
+                        className={`shrink-0 text-[#9951F4] transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                      />
+                    </button>
+                    {isOpen && (
+                      <p className="px-[20px] pb-[20px] pr-[50px] text-[15px] leading-[24px] text-[#665A7B]">
+                        {faq.answer}
+                      </p>
+                    )}
+                  </article>
+                )
+              })}
             </div>
           </div>
         </section>
