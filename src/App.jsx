@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, ChevronRight, HeartPulse, Leaf, Menu, Sparkles, Stethoscope, X } from 'lucide-react'
+import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, ChevronRight, Clock3, HeartPulse, Leaf, Menu, MessageCircle, ShieldCheck, Sparkles, Stethoscope, X } from 'lucide-react'
 
 const navLinks = ['About Dr.', 'Programs', 'Care areas', 'FAQ']
 
@@ -135,6 +135,7 @@ function App() {
   const [selectedProgram, setSelectedProgram] = useState(null)
   const [activeCare, setActiveCare] = useState(0)
   const [activeFaq, setActiveFaq] = useState(0)
+  const [bookingStatus, setBookingStatus] = useState('')
 
   return (
     <div className="min-h-screen bg-[#f5f3ed] text-[#18211c]">
@@ -570,6 +571,104 @@ function App() {
                 )
               })}
             </div>
+          </div>
+        </section>
+
+        <section id="consultation" className="bg-white px-5 py-[72px] md:py-[82px]">
+          <div className="mx-auto grid max-w-[1126px] items-center gap-[52px] md:grid-cols-[0.8fr_1.2fr]">
+            <div className="text-left">
+              <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
+                <CalendarDays size={13} />
+                Book a consultation
+              </p>
+              <h2 className="mt-[24px] max-w-[500px] font-serif text-[44px] leading-[1.08] font-bold tracking-[-0.02em] text-[#24175A] sm:text-[50px]">
+                A first conversation can change the way you see your health.
+              </h2>
+              <p className="mt-[22px] max-w-[520px] text-[16px] leading-[26px] text-[#665A7B]">
+                Share a few details and the clinic can help you take the next step. Please bring relevant reports to your consultation.
+              </p>
+
+              <div className="mt-[34px] space-y-[16px] text-[14px] text-[#665A7B]">
+                <div className="flex items-center gap-[10px]"><Clock3 size={17} className="text-[#9951F4]" /> Consultations by appointment</div>
+                <div className="flex items-center gap-[10px]"><MessageCircle size={17} className="text-[#9951F4]" /> WhatsApp follow-up support included</div>
+                <div className="flex items-center gap-[10px]"><ShieldCheck size={17} className="text-[#9951F4]" /> Ayurveda with modern report review</div>
+              </div>
+              <a
+                href="https://calendar.google.com/calendar/u/0/r/eventedit"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-[28px] inline-flex items-center gap-[7px] text-[14px] font-extrabold text-[#9540EF]"
+              >
+                Choose a time on Google Calendar <ArrowRight size={15} />
+              </a>
+            </div>
+
+            <form
+              className="rounded-[24px] border border-[#E2DDE8] bg-white px-[24px] py-[32px] text-left shadow-[0_10px_24px_rgba(54,34,81,0.08)] sm:px-[40px]"
+              onSubmit={(event) => {
+                event.preventDefault()
+                const formData = new FormData(event.currentTarget)
+                const name = formData.get('name')
+                const phone = formData.get('phone')
+                const email = formData.get('email')
+                const consultationType = formData.get('consultationType')
+                const appointment = formData.get('appointment')
+                const message = formData.get('message') || 'No additional message'
+                const subject = encodeURIComponent(`Consultation request from ${name}`)
+                const body = encodeURIComponent(
+                  [
+                    `Name: ${name}`,
+                    `Phone: ${phone}`,
+                    `Email: ${email}`,
+                    `Consultation type: ${consultationType}`,
+                    `Preferred appointment: ${appointment || 'Not specified'}`,
+                    '',
+                    `Message: ${message}`,
+                  ].join('\n'),
+                )
+                setBookingStatus('Your email app will open with the consultation request.')
+                event.currentTarget.reset()
+                window.location.href = `mailto:pankajgupta1468@gmail.com?subject=${subject}&body=${body}`
+              }}
+            >
+              <div className="grid gap-[18px] sm:grid-cols-2">
+                <label className="text-[13px] font-extrabold text-[#31216A]">
+                  Your name
+                  <input required name="name" placeholder="Full name" className="mt-[8px] w-full rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors placeholder:text-[#9A93A8] focus:border-[#9951F4]" />
+                </label>
+                <label className="text-[13px] font-extrabold text-[#31216A]">
+                  Phone number
+                  <input required name="phone" type="tel" placeholder="Your phone number" className="mt-[8px] w-full rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors placeholder:text-[#9A93A8] focus:border-[#9951F4]" />
+                </label>
+              </div>
+              <label className="mt-[18px] block text-[13px] font-extrabold text-[#31216A]">
+                Email address
+                <input required name="email" type="email" placeholder="Your email address" className="mt-[8px] w-full rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors placeholder:text-[#9A93A8] focus:border-[#9951F4]" />
+              </label>
+              <label className="mt-[18px] block text-[13px] font-extrabold text-[#31216A]">
+                Consultation type
+                <select name="consultationType" className="mt-[8px] w-full rounded-[10px] border border-[#DED7E7] bg-white px-[15px] py-[12px] text-[14px] font-normal outline-none focus:border-[#9951F4]">
+                  <option>Fertility and preconception</option>
+                  <option>PCOS and hormonal health</option>
+                  <option>Pregnancy care</option>
+                  <option>Postnatal and lactation</option>
+                  <option>Digestive and metabolic health</option>
+                  <option>Male reproductive health</option>
+                </select>
+              </label>
+              <label className="mt-[18px] block text-[13px] font-extrabold text-[#31216A]">
+                Preferred appointment date and time
+                <input name="appointment" type="datetime-local" className="mt-[8px] w-full rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors focus:border-[#9951F4]" />
+              </label>
+              <label className="mt-[18px] block text-[13px] font-extrabold text-[#31216A]">
+                Message
+                <textarea name="message" rows="3" placeholder="Tell us briefly what support you are looking for" className="mt-[8px] w-full resize-y rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors placeholder:text-[#9A93A8] focus:border-[#9951F4]" />
+              </label>
+              <button type="submit" className="mt-[22px] flex w-full items-center justify-center gap-[8px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[24px] py-[16px] text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.16)]">
+                Request consultation <ArrowRight size={16} />
+              </button>
+              {bookingStatus && <p className="mt-[14px] text-center text-[13px] font-bold text-[#6550A1]" role="status">{bookingStatus}</p>}
+            </form>
           </div>
         </section>
 
