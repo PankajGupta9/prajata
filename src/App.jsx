@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, ChevronRight, Clock3, HeartPulse, Leaf, Mail, MapPin, Menu, MessageCircle, Phone, ShieldCheck, Sparkles, X } from 'lucide-react'
 import heroImage from './assets/Hero-image.jpeg'
+import fertilityLogo from './assets/logo_1.png'
+import postnatalLogo from './assets/logo_2.png'
+import digestiveLogo from './assets/logo_3.png'
+import pregnancyLogo from './assets/logo_4.png'
+import holisticLogo from './assets/logo_5.png'
+import maleFertilityLogo from './assets/logo_6.png'
 
 const navLinks = [
   { label: 'About Dr.', href: '#about-dr' },
@@ -18,6 +24,7 @@ const programs = [
     duration: '3 months',
     includes: ['Prakriti, Dosha, Agni, and Ama assessment', 'Beeja, Kshetra, Ritu, and Ambu considerations', 'Cycle and ovulation support', 'Preconception detox and Rasayana planning'],
     icon: 'fertility',
+    logo: fertilityLogo,
   },
   {
     title: 'PCOS Reversal',
@@ -26,6 +33,7 @@ const programs = [
     duration: '4-6 months',
     includes: ['Hormonal and lifestyle assessment', 'PCOS-friendly meal planning', 'Menstrual cycle support', 'Metabolic and stress management'],
     icon: 'cycle',
+    logo: holisticLogo,
   },
   {
     title: 'Male Fertility',
@@ -34,6 +42,7 @@ const programs = [
     duration: '3-4 months',
     includes: ['Partner health assessment', 'Semen-supportive nutrition', 'Lifestyle and stress correction', 'Repeat report comparison'],
     icon: 'male',
+    logo: maleFertilityLogo,
   },
   {
     title: 'Pregnancy Care',
@@ -42,6 +51,25 @@ const programs = [
     duration: 'Trimester-based',
     includes: ['Trimester-wise care plan', 'Nausea and digestion support', 'Safe movement and rest guidance', 'Postpartum preparation'],
     icon: 'pregnancy',
+    logo: pregnancyLogo,
+  },
+  {
+    title: 'Postnatal & Lactation',
+    summary: 'Restoring strength, nourishment, hormonal balance, and breastfeeding confidence.',
+    detail: 'A gentle postpartum care program designed around the mother’s recovery, feeding goals, digestion, sleep, emotional wellbeing, and changing energy needs. The plan supports traditional nourishment and practical routines that make recovery sustainable.',
+    duration: '6-12 weeks',
+    includes: ['Postnatal nourishment plan', 'Lactation and breastfeeding support', 'Hormonal and sleep recovery', 'Gentle strength and digestion care'],
+    icon: 'pregnancy',
+    logo: postnatalLogo,
+  },
+  {
+    title: 'Digestive & Metabolic Care',
+    summary: 'Rebuilding digestion, metabolism, gut balance, and everyday vitality.',
+    detail: 'A root-cause program for bloating, IBS, constipation, inflammatory patterns, weight changes, fatigue, and metabolic imbalance. Care brings together digestive correction, realistic meal planning, daily rhythm, and sustainable lifestyle support.',
+    duration: '3-4 months',
+    includes: ['Digestive and metabolic assessment', 'Personalized nutrition planning', 'Gut, Agni, and Ama support', 'Lifestyle and stress correction'],
+    icon: 'cycle',
+    logo: digestiveLogo,
   },
 ]
 
@@ -108,48 +136,6 @@ const faqs = [
     answer: 'Yes. The consultation may include menstrual health, digestion, hormones, lifestyle, nutrition, stress, and relevant report review to create a personalized plan.',
   },
 ]
-
-function ProgramIcon({ type }) {
-  const common = { viewBox: '0 0 64 64', className: 'size-[54px]', fill: 'none', 'aria-hidden': true }
-  const color = '#8A38C8'
-
-  if (type === 'male') {
-    return (
-      <svg {...common}>
-        <circle cx="32" cy="32" r="28" fill="#F3EAFE" />
-        <path d="M21 42c3-8 8-12 14-12 5 0 8 3 9 8 1 6-3 11-9 12-6 1-12-2-14-8Z" fill="#63248C" />
-        <path d="M25 30c-1-6 2-11 7-13 4-2 9 0 11 4 2 5 0 10-5 13" stroke={color} strokeWidth="4" strokeLinecap="round" />
-        <path d="M38 31l8-8M42 23h4v4" stroke={color} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="32" cy="39" r="3" fill="#B970E0" />
-      </svg>
-    )
-  }
-  if (type === 'pregnancy') {
-    return (
-      <svg {...common}>
-        <circle cx="32" cy="32" r="28" fill="#F3EAFE" />
-        <circle cx="32" cy="17" r="5" fill="#D99BE8" stroke={color} strokeWidth="2" />
-        <path d="M29 23c-7 4-10 12-7 20 2 6 8 10 14 8 7-2 10-10 7-16-3-7-8-12-14-12Z" fill="#FFF" stroke={color} strokeWidth="3" />
-        <path d="M33 27c-4 7-4 13 1 18M38 32c-2 4-2 9 2 13" stroke="#B36BD0" strokeWidth="2" strokeLinecap="round" />
-      </svg>
-    )
-  }
-  return (
-    <svg {...common}>
-      <circle cx="32" cy="32" r="28" fill="#F3EAFE" />
-      <circle cx="32" cy="32" r="21" fill="#FFF" stroke="#B56CD5" strokeWidth="2" />
-      <circle cx="25" cy="18" r="4" fill="#D99BE8" stroke={color} strokeWidth="2" />
-      <circle cx="38" cy="21" r="4" fill="#D99BE8" stroke={color} strokeWidth="2" />
-      <path d="M26 24c-8 4-10 13-5 19 6 8 17 8 23 1 5-6 3-14-3-18" fill={type === 'cycle' ? '#F4E1FF' : '#C77AD9'} stroke={color} strokeWidth="3" />
-      {type === 'cycle' && (
-        <>
-          <path d="M25 32c5-4 13-4 18 1M27 39c4 3 9 3 13 0" stroke="#FFF" strokeWidth="3" strokeLinecap="round" />
-          <circle cx="32" cy="35" r="4" fill="#FFF" />
-        </>
-      )}
-    </svg>
-  )
-}
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -457,7 +443,7 @@ function App() {
               Personalized programs that bring together classical Ayurveda, modern reports, and consistent support.
             </p>
 
-            <div className="mt-[48px] grid gap-[20px] sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-[48px] grid gap-[20px] sm:grid-cols-2 lg:grid-cols-3">
               {programs.map((program) => {
                 const isSelected = selectedProgram?.title === program.title
                 return (
@@ -467,7 +453,14 @@ function App() {
                       isSelected ? 'border-[#A873EF] shadow-[0_12px_28px_rgba(83,52,121,0.12)]' : 'border-[#E3DDE9] shadow-[0_7px_18px_rgba(54,34,81,0.07)]'
                     }`}
                   >
-                    <ProgramIcon type={program.icon} />
+                    <div className="grid size-[72px] place-items-center overflow-hidden rounded-full border border-[#ECE4F4] bg-[#090718] shadow-[0_7px_18px_rgba(54,34,81,0.08)]">
+                      <img
+                        src={program.logo}
+                        alt=""
+                        className="size-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
                     <h3 className="mt-[22px] font-serif text-[20px] font-bold text-[#24175A]">{program.title}</h3>
                     <p className="mt-[12px] flex-1 text-[14px] leading-[21px] text-[#665A7B]">{program.summary}</p>
                     <button
