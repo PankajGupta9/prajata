@@ -17,6 +17,10 @@ html {
   scroll-behavior: smooth;
 }
 
+[id] {
+  scroll-margin-top: 98px;
+}
+
 .site-reveal {
   opacity: 0;
   transform: translateY(28px);

@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, ChevronRight, Clock3, HeartPulse, Leaf, Mail, MapPin, Menu, MessageCircle, Phone, ShieldCheck, Sparkles, X } from 'lucide-react'
+import heroImage from './assets/Hero-image.jpeg'
 
-const navLinks = ['About Dr.', 'Programs', 'Care areas', 'FAQ']
+const navLinks = [
+  { label: 'About Dr.', href: '#about-dr' },
+  { label: 'Programs', href: '#programs' },
+  { label: 'Care areas', href: '#care-areas-detail' },
+  { label: 'FAQ', href: '#faq' },
+]
 const appointmentUrl = 'https://calendar.app.google/Z8Zk8mhcgnEkVxFw6'
 
 const programs = [
@@ -222,8 +228,8 @@ function App() {
 
           <div className="hidden items-center gap-[34px] md:flex">
             {navLinks.map((link) => (
-              <a key={link} href={`#${link.toLowerCase().replaceAll(' ', '-')}`} className="text-[16px] font-bold text-[#282228] transition-colors hover:text-[#783BEA]">
-                {link}
+              <a key={link.label} href={link.href} className="text-[16px] font-bold text-[#282228] transition-colors hover:text-[#783BEA]">
+                {link.label}
               </a>
             ))}
             <a href={appointmentUrl} target="_blank" rel="noreferrer" className="ml-[4px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-[26px] py-[15px] text-[16px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
@@ -246,8 +252,8 @@ function App() {
           <div className="border-t border-[#18211c]/10 bg-[#f5f3ed] px-5 py-5 md:hidden">
             <div className="mx-auto flex max-w-7xl flex-col gap-1">
               {navLinks.map((link) => (
-                <a key={link} href={`#${link.toLowerCase().replaceAll(' ', '-')}`} onClick={() => setMenuOpen(false)} className="border-b border-[#18211c]/10 py-3 text-lg font-semibold">
-                  {link}
+                <a key={link.label} href={link.href} onClick={() => setMenuOpen(false)} className="border-b border-[#18211c]/10 py-3 text-lg font-semibold">
+                  {link.label}
                 </a>
               ))}
               <a href={appointmentUrl} target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)} className="mt-3 rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-5 py-3 text-center text-sm font-extrabold text-white">
@@ -298,15 +304,79 @@ function App() {
           <div className="relative mx-auto w-full max-w-[430px] md:mx-0 md:ml-auto">
             <div className="group h-[480px] overflow-hidden rounded-[23px] bg-[#D9D4E7] sm:h-[580px]">
               <img
-                src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=88"
+                src={heroImage}
                 alt="Dr. Swathi Chandrasekar"
-                className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+                loading="eager"
+                fetchPriority="high"
+                className="h-full w-full object-cover object-[center_28%] transition-transform duration-700 ease-out group-hover:scale-[1.06]"
               />
             </div>
             <div className="absolute bottom-[24px] left-[12px] w-[205px] rounded-[14px] border border-white/70 bg-white p-[18px] text-left shadow-[0_12px_30px_rgba(48,33,73,0.13)] sm:left-[-18px]">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#9349EF]">Root cause care</p>
               <p className="mt-[10px] font-serif text-[16px] leading-[24px] font-bold text-[#321B68]">
                 Your body can heal<br />with the right support.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="about-dr" data-reveal className="site-reveal scroll-mt-[98px] bg-white px-5 py-[72px] md:py-[82px]">
+          <div className="mx-auto grid max-w-[1126px] gap-[48px] md:grid-cols-[1.08fr_0.92fr] md:items-start">
+            <div className="text-left">
+              <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
+                <Sparkles size={13} />
+                About Dr. Swathi C
+              </p>
+              <h2 className="mt-[24px] max-w-[620px] font-serif text-[44px] leading-[1.08] font-bold tracking-[-0.02em] text-[#24175A] sm:text-[50px]">
+                Personalized care grounded in experience and empathy.
+              </h2>
+              <p className="mt-[22px] max-w-[590px] text-[16px] leading-[27px] text-[#665A7B]">
+                Dr. Swathi C offers specialized Ayurvedic fertility treatment for women and couples dealing with infertility, PCOS, endometriosis, and hormonal imbalance. With over 12 years of experience in Prasuti Tantra and Stri Roga, her approach combines classical Ayurveda with modern diagnostic understanding.
+              </p>
+
+              <div className="mt-[36px] grid gap-[14px] sm:grid-cols-[270px_1fr]">
+                <div className="rounded-[14px] border border-[#E5DFEA] bg-[#FFFEFD] px-[20px] py-[18px] text-left">
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#9349EF]">Qualifications</p>
+                  <p className="mt-[12px] text-[15px] leading-[24px] font-extrabold text-[#31216A]">
+                    BAMS<br />MS in Prasuti Tantra &amp; Stri Roga
+                  </p>
+                </div>
+                <div className="rounded-[14px] border border-[#E5DFEA] bg-[#FFFEFD] px-[20px] py-[18px] text-left">
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#9349EF]">Expertise</p>
+                  <p className="mt-[12px] text-[14px] leading-[23px] text-[#665A7B]">
+                    Infertility, PCOS, endometriosis, fibroids, menstrual, antenatal, postnatal, and gut health.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-[24px]">
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#9349EF]">Areas of expertise</p>
+                <div className="mt-[12px] flex flex-wrap gap-[10px]">
+                  {[
+                    'Male & female fertility',
+                    'PCOS / PCOD',
+                    'Endometriosis & fibroids',
+                    'Menstrual irregularities',
+                    'Antenatal & postnatal care',
+                    'Gut health & hormones',
+                  ].map((item) => (
+                    <span key={item} className="rounded-full border border-[#EEE8F4] bg-[#FBFAFF] px-[14px] py-[9px] text-[13px] text-[#665A7B]">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="relative mt-[7px] min-h-[290px] overflow-hidden rounded-[26px] bg-gradient-to-br from-[#1F1766] to-[#37339A] px-[40px] py-[38px] text-left text-white shadow-[0_14px_30px_rgba(53,38,112,0.12)]">
+              <div className="absolute right-[-60px] top-[-70px] size-[220px] rounded-full border border-white/5" />
+              <div className="absolute right-[16px] top-[18px] size-[150px] rounded-full border border-white/5" />
+              <HeartPulse size={30} className="text-[#B887FF]" strokeWidth={1.7} />
+              <blockquote className="mt-[28px] max-w-[420px] font-serif text-[24px] leading-[34px] font-bold">
+                "My goal is to treat the root cause by understanding each patient&apos;s unique body constitution."
+              </blockquote>
+              <p className="mt-[28px] text-[13px] text-white/75">
+                Don&apos;t ignore the early signs. Start your treatment at the right time.
               </p>
             </div>
           </div>
@@ -476,68 +546,6 @@ function App() {
                   Discuss this care area <ArrowRight size={15} />
                 </a>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="about-dr" data-reveal className="site-reveal bg-white px-5 py-[72px] md:py-[82px]">
-          <div className="mx-auto grid max-w-[1126px] gap-[48px] md:grid-cols-[1.08fr_0.92fr] md:items-start">
-            <div className="text-left">
-              <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
-                <Sparkles size={13} />
-                About Dr. Swathi C
-              </p>
-              <h2 className="mt-[24px] max-w-[620px] font-serif text-[44px] leading-[1.08] font-bold tracking-[-0.02em] text-[#24175A] sm:text-[50px]">
-                Personalized care grounded in experience and empathy.
-              </h2>
-              <p className="mt-[22px] max-w-[590px] text-[16px] leading-[27px] text-[#665A7B]">
-                Dr. Swathi C offers specialized Ayurvedic fertility treatment for women and couples dealing with infertility, PCOS, endometriosis, and hormonal imbalance. With over 12 years of experience in Prasuti Tantra and Stri Roga, her approach combines classical Ayurveda with modern diagnostic understanding.
-              </p>
-
-              <div className="mt-[36px] grid gap-[14px] sm:grid-cols-[270px_1fr]">
-                <div className="rounded-[14px] border border-[#E5DFEA] bg-[#FFFEFD] px-[20px] py-[18px] text-left">
-                  <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#9349EF]">Qualifications</p>
-                  <p className="mt-[12px] text-[15px] leading-[24px] font-extrabold text-[#31216A]">
-                    BAMS<br />MS in Prasuti Tantra &amp; Stri Roga
-                  </p>
-                </div>
-                <div className="rounded-[14px] border border-[#E5DFEA] bg-[#FFFEFD] px-[20px] py-[18px] text-left">
-                  <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#9349EF]">Expertise</p>
-                  <p className="mt-[12px] text-[14px] leading-[23px] text-[#665A7B]">
-                    Infertility, PCOS, endometriosis, fibroids, menstrual, antenatal, postnatal, and gut health.
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-[24px]">
-                <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#9349EF]">Areas of expertise</p>
-                <div className="mt-[12px] flex flex-wrap gap-[10px]">
-                  {[
-                    'Male & female fertility',
-                    'PCOS / PCOD',
-                    'Endometriosis & fibroids',
-                    'Menstrual irregularities',
-                    'Antenatal & postnatal care',
-                    'Gut health & hormones',
-                  ].map((item) => (
-                    <span key={item} className="rounded-full border border-[#EEE8F4] bg-[#FBFAFF] px-[14px] py-[9px] text-[13px] text-[#665A7B]">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="relative mt-[7px] min-h-[290px] overflow-hidden rounded-[26px] bg-gradient-to-br from-[#1F1766] to-[#37339A] px-[40px] py-[38px] text-left text-white shadow-[0_14px_30px_rgba(53,38,112,0.12)]">
-              <div className="absolute right-[-60px] top-[-70px] size-[220px] rounded-full border border-white/5" />
-              <div className="absolute right-[16px] top-[18px] size-[150px] rounded-full border border-white/5" />
-              <HeartPulse size={30} className="text-[#B887FF]" strokeWidth={1.7} />
-              <blockquote className="mt-[28px] max-w-[420px] font-serif text-[24px] leading-[34px] font-bold">
-                "My goal is to treat the root cause by understanding each patient&apos;s unique body constitution."
-              </blockquote>
-              <p className="mt-[28px] text-[13px] text-white/75">
-                Don&apos;t ignore the early signs. Start your treatment at the right time.
-              </p>
             </div>
           </div>
         </section>
