@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, ChevronRight, Clock3, HeartPulse, Leaf, Mail, MapPin, Menu, MessageCircle, Phone, ShieldCheck, Sparkles, X } from 'lucide-react'
 import heroImage from './assets/Hero-image.jpeg'
+import websiteLogo from './assets/logo.png'
 import fertilityLogo from './assets/logo_1.png'
 import postnatalLogo from './assets/logo_2.png'
 import digestiveLogo from './assets/logo_3.png'
@@ -15,6 +16,7 @@ const navLinks = [
   { label: 'FAQ', href: '#faq' },
 ]
 const appointmentUrl = 'https://calendar.app.google/Z8Zk8mhcgnEkVxFw6'
+const contactFormEndpoint = import.meta.env.VITE_CONTACT_FORM_ENDPOINT
 
 const programs = [
   {
@@ -153,6 +155,9 @@ function App() {
   })
 
   useEffect(() => {
+    const canonical = document.querySelector('link[rel="canonical"]')
+    if (canonical) canonical.href = window.location.origin + '/'
+
     const elements = document.querySelectorAll('[data-reveal]')
     if (!('IntersectionObserver' in window)) {
       elements.forEach((element) => element.classList.add('is-visible'))
@@ -197,14 +202,8 @@ function App() {
       <header className="sticky top-0 z-50 border-b border-[#38204f]/10 bg-white shadow-[0_1px_0_rgba(62,31,82,0.02)]">
         <nav className="mx-auto flex h-[78px] max-w-[1126px] items-center justify-between px-5 sm:h-[98px] md:px-8 xl:px-0" aria-label="Primary navigation">
           <a href="#" className="flex items-center gap-4" aria-label="Dr. Swathi Chandrasekar home">
-            <span className="grid size-[44px] shrink-0 place-items-center rounded-full" aria-hidden="true">
-              <svg viewBox="0 0 52 52" className="size-[44px]" fill="none">
-                <circle cx="26" cy="26" r="25.25" fill="#FBF8FF" stroke="#E7DCEF" strokeWidth="1.5"/>
-                <path d="M26 10v32M19 15c2.2 1.7 4.4 3.8 7 6 2.6-2.2 4.8-4.3 7-6M20.5 17.5l-7 4.4 5.7 4.1-6.6 4.1 8.1 3.4-4.7 5.1M31.5 17.5l7 4.4-5.7 4.1 6.6 4.1-8.1 3.4 4.7 5.1" stroke="#8838A8" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="26" cy="10" r="2.3" fill="#8838A8"/>
-                <circle cx="26" cy="42" r="2.3" fill="#8838A8"/>
-                <path d="M23.2 25.2h5.6M23.7 28h4.6M26 21v17" stroke="#8838A8" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
+            <span className="grid h-[54px] w-[70px] shrink-0 place-items-center overflow-hidden rounded-[8px]" aria-hidden="true">
+              <img src={websiteLogo} alt="" className="h-full w-full object-contain" />
             </span>
             <span className="text-left">
               <span className="block font-serif text-[20px] leading-none font-bold tracking-[0.01em] text-[#351B63] sm:text-[25px]">Dr. Swathi C</span>
@@ -218,7 +217,7 @@ function App() {
                 {link.label}
               </a>
             ))}
-            <a href={appointmentUrl} target="_blank" rel="noreferrer" className="ml-[4px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-[26px] py-[15px] text-[16px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
+            <a href={appointmentUrl} target="_blank" rel="noopener noreferrer" className="ml-[4px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-[26px] py-[15px] text-[16px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
               Book consultation
             </a>
           </div>
@@ -242,7 +241,7 @@ function App() {
                   {link.label}
                 </a>
               ))}
-              <a href={appointmentUrl} target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)} className="mt-3 rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-5 py-3 text-center text-sm font-extrabold text-white">
+              <a href={appointmentUrl} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className="mt-3 rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-5 py-3 text-center text-sm font-extrabold text-white">
                 Book consultation
               </a>
             </div>
@@ -268,7 +267,7 @@ function App() {
               Supporting natural conception, hormonal balance, and healthy pregnancy through classical Ayurveda with a modern clinical approach.
             </p>
             <div className="mt-[34px] flex flex-wrap gap-[12px]">
-              <a href={appointmentUrl} target="_blank" rel="noreferrer" className="flex items-center gap-[9px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[24px] py-[15px] text-[14px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
+              <a href={appointmentUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-[9px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[24px] py-[15px] text-[14px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
                 Book consultation <ArrowRight size={16} />
               </a>
               <a href="#programs" className="rounded-full border border-[#DDD5EC] bg-white px-[24px] py-[15px] text-[14px] font-extrabold text-[#7A3BE8] transition-colors hover:border-[#9D73EC]">
@@ -577,7 +576,7 @@ function App() {
           <div className="mx-auto max-w-[1126px] text-left">
             <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
               <Sparkles size={13} />
-              Patient stories
+              The care experience
             </p>
             <h2 className="mt-[24px] max-w-[720px] font-serif text-[44px] leading-[1.08] font-bold tracking-[-0.02em] text-[#24175A] sm:text-[50px]">
               Care that makes space for your questions and your whole story.
@@ -588,16 +587,13 @@ function App() {
 
             <div className="mt-[46px] grid gap-[20px] md:grid-cols-3">
               {[
-                ['A calm, thoughtful process', 'Every step was explained with patience. I finally understood how digestion, stress, and my cycle were connected.'],
-                ['Personalized from day one', 'The plan was built around my reports and routine instead of giving me a generic checklist.'],
-                ['Consistent support', 'The follow-up messages helped me stay consistent and made it easy to ask questions between consultations.'],
+                ['A clear, thoughtful process', 'Consultations are designed to explain the assessment, treatment options, and the reasoning behind each plan in plain language.'],
+                ['Personalized from day one', 'Care is considered alongside your reports, health history, current routine, priorities, and response over time.'],
+                ['Consistent support', 'Follow-up check-ins help clarify next steps, monitor progress, and make practical adjustments when needed.'],
               ].map(([title, copy]) => (
                 <article key={title} className="interactive-card min-h-[210px] rounded-[18px] border border-[#E2DDE8] bg-white px-[28px] py-[32px] shadow-[0_7px_18px_rgba(54,34,81,0.06)] transition-all duration-300">
-                  <div className="text-[15px] tracking-[0.18em] text-[#A14CF4]" aria-label="5 out of 5 stars">
-                    ★ ★ ★ ★ ★
-                  </div>
                   <h3 className="mt-[20px] font-serif text-[21px] font-bold text-[#24175A]">{title}</h3>
-                  <p className="mt-[14px] text-[15px] leading-[24px] text-[#665A7B]">&ldquo;{copy}&rdquo;</p>
+                  <p className="mt-[14px] text-[15px] leading-[24px] text-[#665A7B]">{copy}</p>
                 </article>
               ))}
             </div>
@@ -673,7 +669,7 @@ function App() {
               <a
                 href={appointmentUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="mt-[28px] inline-flex items-center gap-[9px] rounded-full bg-[#9540EF] px-[24px] py-[14px] text-[14px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.16)] transition-transform hover:-translate-y-0.5"
               >
                 Schedule appointment <ArrowRight size={15} />
@@ -682,12 +678,18 @@ function App() {
 
             <form
               className="rounded-[24px] border border-[#E2DDE8] bg-[#FEFDFF] px-5 py-7 text-left shadow-[0_16px_40px_rgba(54,34,81,0.10)] sm:px-10 sm:py-10"
-              action="https://formsubmit.co/pankajgupta1468@gmail.com"
+              action={contactFormEndpoint || undefined}
               method="POST"
+              onSubmit={(event) => {
+                if (!contactFormEndpoint) {
+                  event.preventDefault()
+                  window.alert('Online form submission is being configured. Please use the appointment booking link instead.')
+                }
+              }}
             >
               <input type="hidden" name="_subject" value="New consultation request" />
               <input type="hidden" name="_template" value="table" />
-              <input type="hidden" name="_captcha" value="false" />
+              <input type="text" name="_gotcha" tabIndex="-1" autoComplete="off" className="hidden" aria-hidden="true" />
               <input type="hidden" name="_next" value={`${window.location.origin}${window.location.pathname}?consultation=submitted`} />
               <div className="mb-6 border-b border-[#ECE7F1] pb-5">
                 <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#9951F4]">Consultation request</p>
@@ -720,11 +722,15 @@ function App() {
               </label>
               <label className="mt-5 block text-[13px] font-bold tracking-[0.01em] text-[#31216A]">
                 Preferred appointment date and time
-                <input name="appointment" type="datetime-local" className="mt-2.5 w-full rounded-xl border border-[#DDD6E7] bg-white px-4 py-[13px] text-[15px] font-normal text-[#31216A] outline-none transition-all focus:border-[#9951F4] focus:ring-4 focus:ring-[#9951F4]/10" />
+                <input name="appointment" type="datetime-local" min={new Date().toISOString().slice(0, 16)} className="mt-2.5 w-full rounded-xl border border-[#DDD6E7] bg-white px-4 py-[13px] text-[15px] font-normal text-[#31216A] outline-none transition-all focus:border-[#9951F4] focus:ring-4 focus:ring-[#9951F4]/10" />
               </label>
               <label className="mt-5 block text-[13px] font-bold tracking-[0.01em] text-[#31216A]">
                 Message
                 <textarea name="message" rows="4" placeholder="Briefly tell us what support you are looking for" className="mt-2.5 w-full resize-y rounded-xl border border-[#DDD6E7] bg-white px-4 py-[13px] text-[15px] font-normal leading-6 text-[#31216A] outline-none transition-all placeholder:text-[#A39AAA] focus:border-[#9951F4] focus:ring-4 focus:ring-[#9951F4]/10" />
+              </label>
+              <label className="mt-5 flex items-start gap-3 text-[13px] leading-[20px] text-[#665A7B]">
+                <input required type="checkbox" name="consent" className="mt-1 size-4 rounded border-[#DDD6E7] accent-[#9540EF]" />
+                <span>I consent to being contacted about this enquiry and have read the privacy information below.</span>
               </label>
               <button
                 type="submit"
@@ -833,7 +839,7 @@ function App() {
               <a
                 href={appointmentUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 onClick={() => setSelectedProgram(null)}
                 className="mt-9 inline-flex w-full items-center justify-center gap-[9px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[26px] py-[16px] text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.16)] transition-transform hover:-translate-y-0.5 sm:w-auto"
               >
@@ -867,7 +873,7 @@ function App() {
             <a
               href="https://maps.google.com/?q=Keustupha+M2-0614+Brigade+Xanadu+Celeste+Chennai"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="flex items-start gap-[12px] text-[15px] leading-[24px] text-white"
             >
               <MapPin size={19} className="mt-[3px] shrink-0" />
@@ -903,7 +909,7 @@ function App() {
               <p className="mt-[16px] max-w-[300px] text-[14px] leading-[22px] text-white/85">
                 For fertility, hormonal, digestive, pregnancy, and postnatal care.
               </p>
-              <a href={appointmentUrl} target="_blank" rel="noreferrer" className="mt-[14px] inline-flex items-center gap-[7px] text-[14px] font-extrabold text-white">
+              <a href={appointmentUrl} target="_blank" rel="noopener noreferrer" className="mt-[14px] inline-flex items-center gap-[7px] text-[14px] font-extrabold text-white">
                 Book consultation <ArrowRight size={15} />
               </a>
             </div>
