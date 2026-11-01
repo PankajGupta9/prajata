@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronRight, Leaf, Menu, Sparkles, X } from 'lucide-react'
+import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronRight, Leaf, Menu, Sparkles, Stethoscope, X } from 'lucide-react'
 
 const navLinks = ['About Dr.', 'Programs', 'Care areas', 'FAQ']
 
@@ -35,6 +35,37 @@ const programs = [
     duration: 'Trimester-based',
     includes: ['Trimester-wise care plan', 'Nausea and digestion support', 'Safe movement and rest guidance', 'Postpartum preparation'],
     icon: 'pregnancy',
+  },
+]
+
+const careAreas = [
+  {
+    title: 'Fertility & preconception',
+    description: 'Couple-based assessment, cycle tracking, ovulation support, endometrial protocols, and IUI/IVF support.',
+  },
+  {
+    title: "Women’s hormonal care",
+    description: 'Personalized support for PCOS, irregular cycles, PMS, painful periods, thyroid imbalance, and hormonal acne.',
+  },
+  {
+    title: 'Pregnancy care',
+    description: 'Trimester-wise guidance for nutrition, digestion, energy, sleep, emotional wellbeing, and a healthy pregnancy.',
+  },
+  {
+    title: 'Postnatal & lactation',
+    description: 'Gentle postpartum recovery support for nourishment, strength, lactation, digestion, and hormonal restoration.',
+  },
+  {
+    title: 'Digestive & metabolic health',
+    description: 'Root-cause care for bloating, IBS, constipation, metabolic imbalance, inflammation, and healthy weight.',
+  },
+  {
+    title: 'Male reproductive health',
+    description: 'Support for sperm quality, motility, count, stress, metabolic health, and reproductive strength.',
+  },
+  {
+    title: 'Panchakarma & Shaniika Chikitsa',
+    description: 'Classical cleansing and restorative therapies selected according to your constitution and current health needs.',
   },
 ]
 
@@ -83,6 +114,7 @@ function ProgramIcon({ type }) {
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [selectedProgram, setSelectedProgram] = useState(null)
+  const [activeCare, setActiveCare] = useState(0)
 
   return (
     <div className="min-h-screen bg-[#f5f3ed] text-[#18211c]">
@@ -298,6 +330,56 @@ function App() {
               })}
             </div>
 
+          </div>
+        </section>
+
+        <section id="care-areas-detail" className="bg-[#FCFBF8] px-5 py-[72px] md:py-[82px]">
+          <div className="mx-auto max-w-[1126px] text-left">
+            <p className="inline-flex items-center gap-[9px] rounded-full bg-[#F1EAFE] px-[13px] py-[7px] text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8C43EE]">
+              <Sparkles size={13} />
+              Care areas
+            </p>
+            <h2 className="mt-[24px] max-w-[760px] font-serif text-[44px] leading-[1.08] font-bold tracking-[-0.02em] text-[#24175A] sm:text-[50px]">
+              Integrative support for women, couples, and families.
+            </h2>
+
+            <div className="mt-[44px] grid items-stretch gap-[32px] md:grid-cols-[430px_1fr]">
+              <div className="space-y-[10px]" role="tablist" aria-label="Care areas">
+                {careAreas.map((area, index) => (
+                  <button
+                    key={area.title}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeCare === index}
+                    onClick={() => setActiveCare(index)}
+                    className={`flex w-full items-center justify-between rounded-[12px] px-[18px] py-[12px] text-left text-[14px] font-extrabold transition-all sm:text-[15px] ${
+                      activeCare === index
+                        ? 'bg-gradient-to-r from-[#8150E9] to-[#8D3FF0] text-white shadow-[0_8px_18px_rgba(112,67,240,0.12)]'
+                        : 'border border-[#E7E1EC] bg-white text-[#31216A] hover:border-[#BCA2EC]'
+                    }`}
+                  >
+                    <span>{index + 1}. {area.title}</span>
+                    <ChevronRight size={16} className={activeCare === index ? 'opacity-100' : 'opacity-60'} />
+                  </button>
+                ))}
+              </div>
+
+              <div className="relative min-h-[430px] overflow-hidden rounded-[24px] border border-[#E3DDE8] bg-white shadow-[0_8px_22px_rgba(54,34,81,0.06)]">
+                <div className="px-[34px] pt-[48px] pr-[40px] sm:px-[48px] sm:pt-[52px]">
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#9349EF]">Specialized service</p>
+                  <h3 className="mt-[22px] font-serif text-[30px] leading-[1.12] font-bold text-[#24175A] sm:text-[34px]">
+                    {careAreas[activeCare].title}
+                  </h3>
+                  <p className="mt-[20px] max-w-[540px] text-[16px] leading-[26px] text-[#665A7B]">
+                    {careAreas[activeCare].description}
+                  </p>
+                </div>
+                <div className="absolute bottom-[34px] left-[34px] flex items-center gap-[10px] text-[13px] text-[#665A7B] sm:left-[48px]">
+                  <Stethoscope size={20} className="text-[#9951F4]" />
+                  <span>Ayurveda + modern diagnostic understanding</span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
