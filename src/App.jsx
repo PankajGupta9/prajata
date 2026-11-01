@@ -1,30 +1,41 @@
 import { useState } from 'react'
-import { ArrowRight, Menu, X } from 'lucide-react'
+import { ArrowRight, BadgeCheck, CalendarDays, Leaf, Menu, X } from 'lucide-react'
 
-const navLinks = ['Work', 'Services', 'About', 'Journal']
+const navLinks = ['About Dr.', 'Programs', 'Care areas', 'FAQ']
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
     <div className="min-h-screen bg-[#f5f3ed] text-[#18211c]">
-      <header className="sticky top-0 z-50 border-b border-[#18211c]/10 bg-[#f5f3ed]/95 backdrop-blur-md">
-        <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:px-8" aria-label="Primary navigation">
-          <a href="#" className="font-serif text-2xl font-bold tracking-wide" aria-label="Prajata home">
-            PRAJATA<span className="text-[#d65d42]">.</span>
+      <header className="sticky top-0 z-50 border-b border-[#38204f]/10 bg-white shadow-[0_1px_0_rgba(62,31,82,0.02)]">
+        <nav className="mx-auto flex h-[98px] max-w-[1126px] items-center justify-between px-5 md:px-0" aria-label="Primary navigation">
+          <a href="#" className="flex items-center gap-4" aria-label="Dr. Swathi Chandrasekar home">
+            <span className="grid size-[44px] shrink-0 place-items-center rounded-full" aria-hidden="true">
+              <svg viewBox="0 0 52 52" className="size-[44px]" fill="none">
+                <circle cx="26" cy="26" r="25.25" fill="#FBF8FF" stroke="#E7DCEF" strokeWidth="1.5"/>
+                <path d="M26 10v32M19 15c2.2 1.7 4.4 3.8 7 6 2.6-2.2 4.8-4.3 7-6M20.5 17.5l-7 4.4 5.7 4.1-6.6 4.1 8.1 3.4-4.7 5.1M31.5 17.5l7 4.4-5.7 4.1 6.6 4.1-8.1 3.4 4.7 5.1" stroke="#8838A8" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="26" cy="10" r="2.3" fill="#8838A8"/>
+                <circle cx="26" cy="42" r="2.3" fill="#8838A8"/>
+                <path d="M23.2 25.2h5.6M23.7 28h4.6M26 21v17" stroke="#8838A8" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </span>
+            <span className="text-left">
+              <span className="block font-serif text-[25px] leading-none font-bold tracking-[0.01em] text-[#351B63]">Dr. Swathi C</span>
+              <span className="mt-[8px] block text-[11px] font-extrabold uppercase tracking-[0.24em] text-[#9B42D0]">Ayurvedic fertility care</span>
+            </span>
           </a>
 
-          <div className="hidden items-center gap-9 md:flex">
+          <div className="hidden items-center gap-[34px] md:flex">
             {navLinks.map((link) => (
-              <a key={link} href={`#${link.toLowerCase()}`} className="text-sm font-semibold transition-colors hover:text-[#d65d42]">
+              <a key={link} href={`#${link.toLowerCase().replaceAll(' ', '-')}`} className="text-[16px] font-bold text-[#282228] transition-colors hover:text-[#783BEA]">
                 {link}
               </a>
             ))}
+            <a href="#consultation" className="ml-[4px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-[26px] py-[15px] text-[16px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
+              Book consultation
+            </a>
           </div>
-
-          <a href="#contact" className="hidden items-center gap-2 rounded-full bg-[#18211c] px-5 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 md:flex">
-            Start a project <ArrowRight size={16} />
-          </a>
 
           <button
             type="button"
@@ -45,45 +56,64 @@ function App() {
                   {link}
                 </a>
               ))}
+              <a href="#consultation" onClick={() => setMenuOpen(false)} className="mt-3 rounded-full bg-gradient-to-r from-[#7C46F0] to-[#8B3BF0] px-5 py-3 text-center text-sm font-extrabold text-white">
+                Book consultation
+              </a>
             </div>
           </div>
         )}
       </header>
 
       <main>
-        <section className="mx-auto grid min-h-[680px] max-w-7xl items-center gap-10 px-5 py-16 md:grid-cols-[1fr_0.82fr] md:px-8">
-          <div className="max-w-2xl">
-            <p className="mb-5 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-[#d65d42]">
-              <span className="h-px w-9 bg-[#d65d42]" /> Independent creative studio
+        <section className="mx-auto grid max-w-[1126px] items-center gap-12 px-5 py-[74px] md:grid-cols-[1.08fr_0.92fr] md:px-0 md:py-[78px]">
+          <div className="max-w-[520px] text-left">
+            <p className="mb-[25px] flex items-center gap-[12px] text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#9349EF]">
+              <Leaf size={15} strokeWidth={1.8} />
+              Classical wisdom, modern care
             </p>
-            <h1 className="font-serif text-6xl leading-[0.92] font-bold sm:text-7xl md:text-8xl">
-              Ideas with<br />room to <em className="font-normal text-[#d65d42]">grow.</em>
+            <h1 className="font-serif text-[48px] leading-[0.94] font-bold tracking-[-0.02em] text-[#24175A] sm:text-[60px] md:text-[64px]">
+              Ayurvedic<br />
+              Fertility &amp;<br />
+              Women&apos;s Health<br />
+              Care<br />
+              <em className="font-normal text-[#913AFF]">personalized for<br />you.</em>
             </h1>
-            <p className="mt-8 max-w-lg text-lg leading-8 text-[#18211c]/70">
-              We shape thoughtful brands, digital experiences, and visual stories for people building what comes next.
+            <p className="mt-[28px] max-w-[520px] text-[16px] leading-[26px] text-[#584B78]">
+              Supporting natural conception, hormonal balance, and healthy pregnancy through classical Ayurveda with a modern clinical approach.
             </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <a href="#work" className="flex items-center gap-2 rounded-full bg-[#d65d42] px-6 py-4 text-sm font-bold text-white transition-transform hover:-translate-y-0.5">
-                Explore our work <ArrowRight size={17} />
+            <div className="mt-[34px] flex flex-wrap gap-[12px]">
+              <a href="#consultation" className="flex items-center gap-[9px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[24px] py-[15px] text-[14px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.18)] transition-transform hover:-translate-y-0.5">
+                Book consultation <ArrowRight size={16} />
               </a>
-              <a href="#about" className="rounded-full border border-[#18211c]/20 px-6 py-4 text-sm font-bold transition-colors hover:bg-white">
-                About the studio
+              <a href="#programs" className="rounded-full border border-[#DDD5EC] bg-white px-[24px] py-[15px] text-[14px] font-extrabold text-[#7A3BE8] transition-colors hover:border-[#9D73EC]">
+                Explore programs
               </a>
+            </div>
+            <div className="mt-[38px] flex flex-wrap items-center gap-[28px] text-[13px] font-medium text-[#655A78]">
+              <span className="flex items-center gap-[8px]">
+                <BadgeCheck size={15} className="text-[#9550EF]" />
+                12+ years clinical experience
+              </span>
+              <span className="flex items-center gap-[8px]">
+                <CalendarDays size={15} className="text-[#9550EF]" />
+                BAMS, MS
+              </span>
             </div>
           </div>
 
-          <div className="relative min-h-[480px] overflow-hidden rounded-sm bg-[#b8c4ba] md:min-h-[560px]">
-            <img
-              src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85"
-              alt="Bright creative studio interior"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <div className="absolute inset-x-5 bottom-5 flex items-end justify-between rounded-sm bg-[#f5f3ed] p-5 md:left-auto md:w-[260px]">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#18211c]/50">Featured</p>
-                <p className="mt-1 font-serif text-xl font-bold">The Common Ground</p>
-              </div>
-              <ArrowRight size={20} />
+          <div className="relative mx-auto w-full max-w-[430px] md:mx-0 md:ml-auto">
+            <div className="h-[580px] overflow-hidden rounded-[23px] bg-[#D9D4E7]">
+              <img
+                src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=88"
+                alt="Dr. Swathi Chandrasekar"
+                className="h-full w-full object-cover object-center"
+              />
+            </div>
+            <div className="absolute bottom-[24px] left-[-18px] w-[205px] rounded-[14px] border border-white/70 bg-white p-[18px] text-left shadow-[0_12px_30px_rgba(48,33,73,0.13)]">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#9349EF]">Root cause care</p>
+              <p className="mt-[10px] font-serif text-[16px] leading-[24px] font-bold text-[#321B68]">
+                Your body can heal<br />with the right support.
+              </p>
             </div>
           </div>
         </section>
