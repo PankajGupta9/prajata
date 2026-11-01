@@ -16,7 +16,9 @@ const navLinks = [
   { label: 'FAQ', href: '#faq' },
 ]
 const appointmentUrl = 'https://calendar.app.google/Z8Zk8mhcgnEkVxFw6'
-const contactFormEndpoint = import.meta.env.VITE_CONTACT_FORM_ENDPOINT
+const contactFormEndpoint =
+  import.meta.env.VITE_CONTACT_FORM_ENDPOINT ||
+  'https://formsubmit.co/pankajgupta1468@gmail.com'
 
 const programs = [
   {
@@ -678,17 +680,12 @@ function App() {
 
             <form
               className="rounded-[24px] border border-[#E2DDE8] bg-[#FEFDFF] px-5 py-7 text-left shadow-[0_16px_40px_rgba(54,34,81,0.10)] sm:px-10 sm:py-10"
-              action={contactFormEndpoint || undefined}
+              action={contactFormEndpoint}
               method="POST"
-              onSubmit={(event) => {
-                if (!contactFormEndpoint) {
-                  event.preventDefault()
-                  window.alert('Online form submission is being configured. Please use the appointment booking link instead.')
-                }
-              }}
             >
               <input type="hidden" name="_subject" value="New consultation request" />
               <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="true" />
               <input type="text" name="_gotcha" tabIndex="-1" autoComplete="off" className="hidden" aria-hidden="true" />
               <input type="hidden" name="_next" value={`${window.location.origin}${window.location.pathname}?consultation=submitted`} />
               <div className="mb-6 border-b border-[#ECE7F1] pb-5">
