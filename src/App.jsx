@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, ChevronRight, Clock3, HeartPulse, Leaf, Menu, MessageCircle, ShieldCheck, Sparkles, Stethoscope, X } from 'lucide-react'
+import { ArrowRight, BadgeCheck, CalendarDays, Check, ChevronDown, ChevronRight, Clock3, HeartPulse, Leaf, Mail, MapPin, Menu, MessageCircle, Phone, ShieldCheck, Sparkles, Stethoscope, X } from 'lucide-react'
 
 const navLinks = ['About Dr.', 'Programs', 'Care areas', 'FAQ']
 
@@ -135,7 +135,15 @@ function App() {
   const [selectedProgram, setSelectedProgram] = useState(null)
   const [activeCare, setActiveCare] = useState(0)
   const [activeFaq, setActiveFaq] = useState(0)
-  const [bookingStatus, setBookingStatus] = useState('')
+  const [bookingSuccess, setBookingSuccess] = useState(() => {
+    const submitted = new URLSearchParams(window.location.search).get('consultation') === 'submitted'
+    if (submitted) {
+      const url = new URL(window.location.href)
+      url.searchParams.delete('consultation')
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
+    }
+    return submitted
+  })
 
   return (
     <div className="min-h-screen bg-[#f5f3ed] text-[#18211c]">
@@ -605,32 +613,13 @@ function App() {
 
             <form
               className="rounded-[24px] border border-[#E2DDE8] bg-white px-[24px] py-[32px] text-left shadow-[0_10px_24px_rgba(54,34,81,0.08)] sm:px-[40px]"
-              onSubmit={(event) => {
-                event.preventDefault()
-                const formData = new FormData(event.currentTarget)
-                const name = formData.get('name')
-                const phone = formData.get('phone')
-                const email = formData.get('email')
-                const consultationType = formData.get('consultationType')
-                const appointment = formData.get('appointment')
-                const message = formData.get('message') || 'No additional message'
-                const subject = encodeURIComponent(`Consultation request from ${name}`)
-                const body = encodeURIComponent(
-                  [
-                    `Name: ${name}`,
-                    `Phone: ${phone}`,
-                    `Email: ${email}`,
-                    `Consultation type: ${consultationType}`,
-                    `Preferred appointment: ${appointment || 'Not specified'}`,
-                    '',
-                    `Message: ${message}`,
-                  ].join('\n'),
-                )
-                setBookingStatus('Your email app will open with the consultation request.')
-                event.currentTarget.reset()
-                window.location.href = `mailto:pankajgupta1468@gmail.com?subject=${subject}&body=${body}`
-              }}
+              action="https://formsubmit.co/pankajgupta1468@gmail.com"
+              method="POST"
             >
+              <input type="hidden" name="_subject" value="New consultation request" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" value={`${window.location.origin}${window.location.pathname}?consultation=submitted`} />
               <div className="grid gap-[18px] sm:grid-cols-2">
                 <label className="text-[13px] font-extrabold text-[#31216A]">
                   Your name
@@ -664,13 +653,63 @@ function App() {
                 Message
                 <textarea name="message" rows="3" placeholder="Tell us briefly what support you are looking for" className="mt-[8px] w-full resize-y rounded-[10px] border border-[#DED7E7] px-[15px] py-[12px] text-[14px] font-normal outline-none transition-colors placeholder:text-[#9A93A8] focus:border-[#9951F4]" />
               </label>
-              <button type="submit" className="mt-[22px] flex w-full items-center justify-center gap-[8px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[24px] py-[16px] text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.16)]">
+              <button
+                type="submit"
+                className="mt-[22px] flex w-full items-center justify-center gap-[8px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[24px] py-[16px] text-[15px] font-extrabold text-white shadow-[0_8px_18px_rgba(112,67,240,0.16)]"
+              >
                 Request consultation <ArrowRight size={16} />
               </button>
-              {bookingStatus && <p className="mt-[14px] text-center text-[13px] font-bold text-[#6550A1]" role="status">{bookingStatus}</p>}
             </form>
           </div>
         </section>
+
+        <section className="bg-white px-5 py-[38px] md:py-[44px]">
+          <div className="mx-auto grid max-w-[1126px] gap-[42px] md:grid-cols-2">
+            <div className="text-left">
+              <h2 className="font-serif text-[24px] font-bold text-[#24175A]">Your privacy matters</h2>
+              <p className="mt-[12px] max-w-[520px] text-[14px] leading-[23px] text-[#665A7B]">
+                Information submitted through this consultation form is used only to respond to your enquiry and coordinate care. Please do not share sensitive medical records in the form.
+              </p>
+            </div>
+            <div className="text-left">
+              <h2 className="font-serif text-[24px] font-bold text-[#24175A]">Medical disclaimer</h2>
+              <p className="mt-[12px] max-w-[520px] text-[14px] leading-[23px] text-[#665A7B]">
+                This website provides general information and is not a substitute for diagnosis or emergency care. Treatment decisions are made during a consultation. For urgent symptoms, contact local emergency services.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {bookingSuccess && (
+          <div
+            className="fixed inset-0 z-[110] flex items-center justify-center bg-[#24152F]/45 px-4 backdrop-blur-[2px]"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="booking-success-title"
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setBookingSuccess(false)
+            }}
+          >
+            <div className="w-full max-w-[430px] rounded-[24px] bg-white px-7 py-9 text-center shadow-[0_24px_70px_rgba(35,20,54,0.24)] sm:px-10">
+              <div className="mx-auto grid size-[58px] place-items-center rounded-full bg-[#F1EAFE] text-[#9540EF]">
+                <Check size={28} strokeWidth={2.5} />
+              </div>
+              <h2 id="booking-success-title" className="mt-[20px] font-serif text-[30px] font-bold text-[#24175A]">
+                Request sent
+              </h2>
+              <p className="mt-[12px] text-[15px] leading-[24px] text-[#665A7B]">
+                Thank you. Your consultation request has been submitted successfully. The clinic will contact you soon.
+              </p>
+              <button
+                type="button"
+                onClick={() => setBookingSuccess(false)}
+                className="mt-[24px] rounded-full bg-gradient-to-r from-[#7C46F0] to-[#9238F1] px-[24px] py-[13px] text-[14px] font-extrabold text-white"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
 
         {selectedProgram && (
           <div
@@ -725,23 +764,40 @@ function App() {
         )}
       </main>
 
-      <footer id="contact" className="bg-[#18211c] text-white">
-        <div className="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
-          <div className="flex flex-col justify-between gap-10 border-b border-white/15 pb-10 md:flex-row md:items-end">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#d9a89c]">Have a project in mind?</p>
-              <a href="mailto:hello@prajata.studio" className="mt-3 block font-serif text-3xl font-bold sm:text-5xl">hello@prajata.studio</a>
-            </div>
-            <a href="#" className="flex size-14 shrink-0 items-center justify-center rounded-full bg-[#d65d42] transition-transform hover:-translate-y-1" aria-label="Back to top">
-              <ArrowRight className="-rotate-45" size={22} />
-            </a>
+      <footer id="contact" className="bg-[#784CF0] text-white">
+        <div className="mx-auto grid max-w-[1126px] gap-[50px] px-5 py-[62px] text-left md:grid-cols-[1.15fr_0.85fr] md:px-0 md:py-[68px]">
+          <div>
+            <MessageCircle size={38} strokeWidth={1.7} className="text-white" />
+            <h2 className="mt-[22px] max-w-[620px] font-serif text-[44px] leading-[1.08] font-bold sm:text-[50px]">
+              Take the first step towards balanced health.
+            </h2>
+            <p className="mt-[18px] max-w-[620px] text-[16px] leading-[26px] text-white/90">
+              Book a personalized consultation for fertility, hormonal, digestive, pregnancy, or postnatal care.
+            </p>
           </div>
-          <div className="flex flex-col gap-6 pt-7 text-sm text-white/60 sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} Prajata Studio</p>
-            <div className="flex items-center gap-5">
-              <a href="#" aria-label="Instagram" className="font-bold hover:text-white">IG</a>
-              <a href="#" aria-label="LinkedIn" className="font-bold hover:text-white">LI</a>
-            </div>
+          <div className="space-y-[14px] md:pt-[10px]">
+            <a href="tel:+919876543210" className="flex items-center gap-[12px] text-[15px] font-medium text-white">
+              <Phone size={18} />
+              +91 9876 543 210
+            </a>
+            <a href="mailto:dr.swathi@ayurveda.com" className="flex items-center gap-[12px] text-[15px] text-white">
+              <Mail size={18} />
+              dr.swathi@ayurveda.com
+            </a>
+            <a
+              href="https://maps.google.com/?q=Keustupha+M2-0614+Brigade+Xanadu+Celeste+Chennai"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-start gap-[12px] text-[15px] leading-[24px] text-white"
+            >
+              <MapPin size={19} className="mt-[3px] shrink-0" />
+              <span>
+                Keustupha M2-0614,<br />
+                Brigade Xanadu - Celeste,<br />
+                Channakya Main Road, Mogappair West,<br />
+                Nolambur, Chennai, Tamil Nadu 600095
+              </span>
+            </a>
           </div>
         </div>
       </footer>
